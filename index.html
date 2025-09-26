@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Гидроэлектростанции: типы и особенности</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -13,13 +14,18 @@
         }
         
         :root {
-            --primary: #2E8B57;
-            --primary-dark: #1F6B41;
-            --secondary: #4682B4;
-            --accent: #FF7F50;
-            --background: #0F1F2D;
-            --text: #E0E0E0;
-            --card-bg: rgba(30, 50, 70, 0.7);
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0ea5e9;
+            --accent: #f59e0b;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --success: #10b981;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --gradient: linear-gradient(135deg, #2563eb, #0ea5e9);
+            --gradient-accent: linear-gradient(135deg, #f59e0b, #f97316);
         }
         
         body {
@@ -27,6 +33,9 @@
             color: var(--text);
             overflow-x: hidden;
             height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 20%);
         }
         
         .presentation-container {
@@ -78,21 +87,50 @@
             margin-bottom: 40px;
             text-align: center;
             width: 100%;
+            position: relative;
         }
         
         h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
             margin-bottom: 20px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            font-weight: 800;
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
         }
         
         h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2rem, 4vw, 3.5rem);
             margin-bottom: 30px;
-            color: var(--primary);
+            font-weight: 700;
+            color: var(--text);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
         }
         
         .content-grid {
@@ -105,51 +143,74 @@
         
         .text-content {
             text-align: left;
-            padding: 30px;
-            background: var(--card-bg);
-            border-radius: 15px;
+            padding: 40px;
+            background: var(--surface);
+            border-radius: 20px;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             overflow-y: auto;
             border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .text-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
         }
         
         .visual-content {
             display: flex;
             justify-content: center;
             align-items: center;
-            background: var(--card-bg);
-            border-radius: 15px;
+            background: var(--surface);
+            border-radius: 20px;
             overflow: hidden;
             position: relative;
             border-left: 5px solid var(--secondary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .visual-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
         }
         
         ul {
             list-style-type: none;
-            padding-left: 20px;
+            padding-left: 0;
         }
         
         li {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: clamp(1rem, 2vw, 1.2rem);
             line-height: 1.6;
             position: relative;
+            padding-left: 30px;
         }
         
         li:before {
-            content: "•";
+            content: '▹';
             color: var(--accent);
             font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1em;
+            position: absolute;
+            left: 0;
             font-size: 1.5rem;
         }
         
         .nav-buttons {
             position: fixed;
-            bottom: 30px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -158,21 +219,26 @@
         }
         
         .nav-btn {
-            padding: 12px 25px;
-            background: rgba(46, 139, 87, 0.7);
+            padding: 14px 30px;
+            background: var(--surface);
             border: none;
             border-radius: 50px;
-            color: white;
+            color: var(--text);
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
         }
         
         .nav-btn:hover {
             background: var(--primary);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
         }
         
         .slide-indicators {
@@ -181,22 +247,24 @@
             right: 30px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             z-index: 10;
         }
         
         .indicator {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             cursor: pointer;
             transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
         
         .indicator.active {
             background: var(--primary);
             transform: scale(1.3);
+            border-color: var(--accent);
         }
         
         .hydro-scheme {
@@ -218,23 +286,25 @@
             background: linear-gradient(to right, #8B7355, #A0522D);
             border-radius: 5px;
             z-index: 2;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
         
         .turbine {
-            width: 60px;
-            height: 60px;
-            background: #2c3e50;
+            width: 70px;
+            height: 70px;
+            background: var(--surface);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 3;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .turbine:after {
             content: "";
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border: 5px dashed var(--secondary);
             border-radius: 50%;
             animation: spin 3s linear infinite;
@@ -246,14 +316,14 @@
         }
         
         .reservoir {
-            background: rgba(70, 130, 180, 0.3);
+            background: rgba(14, 165, 233, 0.2);
             border: 2px solid var(--secondary);
-            border-radius: 0 0 10px 10px;
+            border-radius: 0 0 15px 15px;
             z-index: 1;
         }
         
         .river {
-            background: linear-gradient(to bottom, var(--secondary), #2a5c8a);
+            background: linear-gradient(to bottom, var(--secondary), #0c8fc7);
             border-radius: 0 0 5px 5px;
             z-index: 1;
         }
@@ -265,16 +335,18 @@
         }
         
         .powerhouse {
-            background: #34495e;
-            border-radius: 5px;
+            background: var(--surface);
+            border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             text-align: center;
             z-index: 2;
-            padding: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .chart-container {
@@ -283,55 +355,82 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 30px;
         }
         
         .bar-chart {
             display: flex;
             align-items: flex-end;
             height: 80%;
-            gap: 30px;
+            gap: 40px;
             width: 100%;
             justify-content: center;
         }
         
         .bar {
-            width: 60px;
-            background: linear-gradient(to top, var(--primary), var(--secondary));
-            border-radius: 5px 5px 0 0;
+            width: 70px;
+            background: var(--gradient);
+            border-radius: 8px 8px 0 0;
             position: relative;
             display: flex;
             justify-content: center;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .bar:hover {
+            transform: translateY(-5px);
         }
         
         .bar-label {
             position: absolute;
-            bottom: -30px;
-            font-size: 0.9rem;
+            bottom: -40px;
+            font-size: 1rem;
             text-align: center;
-            width: 100px;
-            left: -20px;
+            width: 120px;
+            left: -25px;
+            font-weight: 600;
+            color: var(--text);
         }
         
         .bar-value {
             position: absolute;
-            top: -30px;
+            top: -35px;
             font-weight: bold;
+            font-size: 1.2rem;
+            background: var(--surface);
+            padding: 5px 10px;
+            border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
         
         .fact-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
+            background: var(--surface);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
             backdrop-filter: blur(5px);
-            border-left: 4px solid var(--primary);
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .fact-card:hover {
+            transform: translateY(-5px);
         }
         
         .fact-title {
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 15px;
             color: var(--primary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .fact-title i {
+            color: var(--accent);
         }
         
         .water-animation {
@@ -348,7 +447,7 @@
             bottom: 0;
             width: 200%;
             height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z" fill="%232E8B57" opacity="0.25"/></svg>');
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z" fill="%232563eb" opacity="0.2"/></svg>');
             background-size: 1200px 100px;
             animation: wave 12s linear infinite;
         }
@@ -368,64 +467,127 @@
             position: fixed;
             top: 30px;
             left: 30px;
-            padding: 10px 15px;
-            background: rgba(46, 139, 87, 0.7);
+            padding: 12px 20px;
+            background: var(--surface);
             border: none;
-            border-radius: 5px;
-            color: white;
+            border-radius: 50px;
+            color: var(--text);
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 10;
             backdrop-filter: blur(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
         }
         
         .fullscreen-btn:hover {
             background: var(--primary);
+            transform: translateY(-3px);
         }
         
         .author {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            color: var(--text-secondary);
             z-index: 10;
+            background: var(--surface);
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .type-comparison {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 25px;
             width: 100%;
             height: 100%;
             padding: 20px;
         }
         
         .type-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 20px;
+            background: var(--surface);
+            border-radius: 15px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
-            border-left: 4px solid var(--accent);
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .type-card:hover {
+            transform: translateY(-5px);
         }
         
         .type-title {
-            font-size: 1.3rem;
-            font-weight: bold;
+            font-size: 1.4rem;
+            font-weight: 700;
             margin-bottom: 15px;
             color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .type-title i {
+            font-size: 1.6rem;
         }
         
         .type-description {
             flex-grow: 1;
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
         
         .type-applicability {
-            margin-top: 10px;
+            margin-top: 15px;
             font-style: italic;
             color: var(--primary);
+            font-weight: 600;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 10;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            z-index: 10;
+            background: var(--surface);
+            padding: 8px 20px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
         }
         
         /* Адаптация для мобильных устройств */
@@ -442,7 +604,7 @@
             }
             
             .text-content, .visual-content {
-                padding: 15px;
+                padding: 20px;
             }
             
             .nav-buttons {
@@ -458,11 +620,14 @@
             .fullscreen-btn {
                 top: 15px;
                 left: 15px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
             }
             
             .author {
                 bottom: 15px;
                 right: 15px;
+                font-size: 0.9rem;
             }
             
             .type-comparison {
@@ -474,7 +639,7 @@
                 flex-direction: column;
                 align-items: center;
                 height: 100%;
-                gap: 15px;
+                gap: 20px;
             }
             
             .bar {
@@ -486,6 +651,11 @@
                 position: static;
                 text-align: center;
                 margin: 5px 0;
+            }
+            
+            .slide-counter {
+                top: 80px;
+                font-size: 1rem;
             }
         }
         
@@ -503,8 +673,12 @@
             }
             
             .nav-btn {
-                padding: 10px 15px;
+                padding: 12px 20px;
                 font-size: 0.9rem;
+            }
+            
+            .author {
+                font-size: 0.8rem;
             }
         }
         
@@ -531,6 +705,14 @@
     </style>
 </head>
 <body>
+    <!-- Прогресс-бар -->
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+    
+    <!-- Счетчик слайдов -->
+    <div class="slide-counter" id="slide-counter">1 / 8</div>
+    
     <div class="presentation-container">
         <!-- Слайд 1: Введение -->
         <div class="slide active" id="slide1">
@@ -736,22 +918,22 @@
                     <div class="visual-content">
                         <div class="type-comparison">
                             <div class="type-card">
-                                <div class="type-title">Приплотинные</div>
+                                <div class="type-title"><i class="fas fa-mountain"></i> Приплотинные</div>
                                 <div class="type-description">Подходят для крупных рек и больших перепадов высоты. Здание ГЭС расположено непосредственно у плотины.</div>
                                 <div class="type-applicability">Применение: крупные реки с большим перепадом высот</div>
                             </div>
                             <div class="type-card">
-                                <div class="type-title">Русловые</div>
+                                <div class="type-title"><i class="fas fa-water"></i> Русловые</div>
                                 <div class="type-description">Эффективны для равнинных водотоков. Здание ГЭС является частью плотины.</div>
                                 <div class="type-applicability">Применение: равнинные реки</div>
                             </div>
                             <div class="type-card">
-                                <div class="type-title">Деривационные</div>
+                                <div class="type-title"><i class="fas fa-hill-rockslide"></i> Деривационные</div>
                                 <div class="type-description">Идеальны для горных условий. Вода подводится к турбинам по каналам или тоннелям.</div>
                                 <div class="type-applicability">Применение: горные районы</div>
                             </div>
                             <div class="type-card">
-                                <div class="type-title">Комбинированные</div>
+                                <div class="type-title"><i class="fas fa-gears"></i> Комбинированные</div>
                                 <div class="type-description">Гибридные решения, сочетающие преимущества разных типов ГЭС.</div>
                                 <div class="type-applicability">Применение: универсальное</div>
                             </div>
@@ -770,27 +952,27 @@
                 <div class="content-grid">
                     <div class="text-content">
                         <div class="fact-card">
-                            <div class="fact-title">Мировая доля гидроэнергетики</div>
+                            <div class="fact-title"><i class="fas fa-globe"></i> Мировая доля гидроэнергетики</div>
                             <div>Гидроэнергетика даёт около 16% всей мировой электроэнергии (данные МЭА).</div>
                         </div>
                         <div class="fact-card">
-                            <div class="fact-title">Российская гидроэнергетика</div>
+                            <div class="fact-title"><i class="fas fa-flag"></i> Российская гидроэнергетика</div>
                             <div>В России гидроэнергетика покрывает ~20% потребности в электричестве.</div>
                         </div>
                         <div class="fact-card">
-                            <div class="fact-title">Крупнейшая ГЭС в мире</div>
+                            <div class="fact-title"><i class="fas fa-trophy"></i> Крупнейшая ГЭС в мире</div>
                             <div>Самая крупная ГЭС в мире — Санься (Китай), мощность 22,5 ГВт.</div>
                         </div>
                         <div class="fact-card">
-                            <div class="fact-title">Крупнейшая ГЭС в России</div>
+                            <div class="fact-title"><i class="fas fa-industry"></i> Крупнейшая ГЭС в России</div>
                             <div>Самая мощная в России — Саяно-Шушенская ГЭС, мощность 6,4 ГВт.</div>
                         </div>
                         <div class="fact-card">
-                            <div class="fact-title">Регулирование энергосистемы</div>
+                            <div class="fact-title"><i class="fas fa-bolt"></i> Регулирование энергосистемы</div>
                             <div>Гидроэнергия — единственный возобновляемый источник, который можно использовать для регулирования энергосистемы в реальном времени.</div>
                         </div>
                         <div class="fact-card">
-                            <div class="fact-title">Норвегия</div>
+                            <div class="fact-title"><i class="fas fa-snowflake"></i> Норвегия</div>
                             <div>В Норвегии более 95% всей электроэнергии производится на ГЭС — страна фактически живёт на воде.</div>
                         </div>
                     </div>
@@ -817,12 +999,12 @@
         </div>
         
         <!-- Кнопка полноэкранного режима -->
-        <button class="fullscreen-btn" id="fullscreen-btn">Полный экран</button>
+        <button class="fullscreen-btn" id="fullscreen-btn"><i class="fas fa-expand"></i> Полный экран</button>
         
         <!-- Навигационные кнопки -->
         <div class="nav-buttons">
-            <button class="nav-btn" id="prev-btn">Назад</button>
-            <button class="nav-btn" id="next-btn">Вперед</button>
+            <button class="nav-btn" id="prev-btn"><i class="fas fa-arrow-left"></i> Назад</button>
+            <button class="nav-btn" id="next-btn">Вперед <i class="fas fa-arrow-right"></i></button>
         </div>
         
         <!-- Индикаторы слайдов -->
@@ -838,7 +1020,7 @@
         </div>
         
         <!-- Информация об авторе -->
-        <div class="author">Презентацию выполнил: Шерифов Алим</div>
+        <div class="author"><i class="fas fa-user"></i> Презентацию выполнил: Шерифов Алим</div>
         
         <!-- Анимация воды -->
         <div class="water-animation">
@@ -854,6 +1036,8 @@
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const progressBar = document.getElementById('progress');
+            const slideCounter = document.getElementById('slide-counter');
             let currentSlide = 0;
             
             // Функция для показа слайда
@@ -870,6 +1054,12 @@
                 indicators.forEach((indicator, i) => {
                     indicator.classList.toggle('active', i === index);
                 });
+                
+                // Обновляем прогресс-бар
+                progressBar.style.width = `${(index + 1) / slides.length * 100}%`;
+                
+                // Обновляем счетчик слайдов
+                slideCounter.textContent = `${index + 1} / ${slides.length}`;
                 
                 currentSlide = index;
             }
@@ -898,7 +1088,7 @@
             
             // Навигация с клавиатуры
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+                if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
                     if (currentSlide < slides.length - 1) {
                         showSlide(currentSlide + 1);
                     }
@@ -925,7 +1115,7 @@
                     } else if (container.msRequestFullscreen) {
                         container.msRequestFullscreen();
                     }
-                    fullscreenBtn.textContent = 'Выйти из полного экрана';
+                    fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i> Выйти из полного экрана';
                 } else {
                     if (document.exitFullscreen) {
                         document.exitFullscreen();
@@ -934,7 +1124,7 @@
                     } else if (document.msExitFullscreen) {
                         document.msExitFullscreen();
                     }
-                    fullscreenBtn.textContent = 'Полный экран';
+                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Полный экран';
                 }
             });
             
@@ -947,7 +1137,7 @@
                 if (!document.fullscreenElement && 
                     !document.webkitFullscreenElement && 
                     !document.msFullscreenElement) {
-                    fullscreenBtn.textContent = 'Полный экран';
+                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Полный экран';
                 }
             }
             
