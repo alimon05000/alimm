@@ -1,1149 +1,199 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Гидроэлектростанции: типы и особенности</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #0ea5e9;
-            --accent: #f59e0b;
-            --background: #0f172a;
-            --surface: #1e293b;
-            --text: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --success: #10b981;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --gradient: linear-gradient(135deg, #2563eb, #0ea5e9);
-            --gradient-accent: linear-gradient(135deg, #f59e0b, #f97316);
-        }
-        
-        body {
-            background: var(--background);
-            color: var(--text);
-            overflow-x: hidden;
-            height: 100vh;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 20%);
-        }
-        
-        .presentation-container {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
-            z-index: 1;
-        }
-        
-        .slide.active {
-            opacity: 1;
-            transform: translateX(0);
-            z-index: 2;
-        }
-        
-        .slide.prev {
-            transform: translateX(-100%);
-            opacity: 0;
-        }
-        
-        .slide-content {
-            max-width: 1400px;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .slide-header {
-            margin-bottom: 40px;
-            text-align: center;
-            width: 100%;
-            position: relative;
-        }
-        
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            margin-bottom: 20px;
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            display: inline-block;
-        }
-        
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: var(--gradient);
-            border-radius: 2px;
-        }
-        
-        h2 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            margin-bottom: 30px;
-            font-weight: 700;
-            color: var(--text);
-            position: relative;
-            display: inline-block;
-        }
-        
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-        
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            width: 100%;
-            height: 70%;
-        }
-        
-        .text-content {
-            text-align: left;
-            padding: 40px;
-            background: var(--surface);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
-            border-left: 5px solid var(--primary);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .text-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: var(--gradient);
-        }
-        
-        .visual-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: var(--surface);
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            border-left: 5px solid var(--secondary);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .visual-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: var(--gradient);
-        }
-        
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        
-        li {
-            margin-bottom: 20px;
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            line-height: 1.6;
-            position: relative;
-            padding-left: 30px;
-        }
-        
-        li:before {
-            content: '▹';
-            color: var(--accent);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-            font-size: 1.5rem;
-        }
-        
-        .nav-buttons {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 20px;
-            z-index: 10;
-        }
-        
-        .nav-btn {
-            padding: 14px 30px;
-            background: var(--surface);
-            border: none;
-            border-radius: 50px;
-            color: var(--text);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-        }
-        
-        .nav-btn:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
-        }
-        
-        .slide-indicators {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 10;
-        }
-        
-        .indicator {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .indicator.active {
-            background: var(--primary);
-            transform: scale(1.3);
-            border-color: var(--accent);
-        }
-        
-        .hydro-scheme {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        
-        .dam, .turbine, .reservoir, .river, .powerhouse, .channel {
-            position: absolute;
-        }
-        
-        .dam {
-            width: 30px;
-            height: 150px;
-            background: linear-gradient(to right, #8B7355, #A0522D);
-            border-radius: 5px;
-            z-index: 2;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .turbine {
-            width: 70px;
-            height: 70px;
-            background: var(--surface);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 3;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .turbine:after {
-            content: "";
-            width: 50px;
-            height: 50px;
-            border: 5px dashed var(--secondary);
-            border-radius: 50%;
-            animation: spin 3s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .reservoir {
-            background: rgba(14, 165, 233, 0.2);
-            border: 2px solid var(--secondary);
-            border-radius: 0 0 15px 15px;
-            z-index: 1;
-        }
-        
-        .river {
-            background: linear-gradient(to bottom, var(--secondary), #0c8fc7);
-            border-radius: 0 0 5px 5px;
-            z-index: 1;
-        }
-        
-        .channel {
-            background: var(--secondary);
-            border-radius: 5px;
-            z-index: 1;
-        }
-        
-        .powerhouse {
-            background: var(--surface);
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 0.9rem;
-            text-align: center;
-            z-index: 2;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .chart-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-        }
-        
-        .bar-chart {
-            display: flex;
-            align-items: flex-end;
-            height: 80%;
-            gap: 40px;
-            width: 100%;
-            justify-content: center;
-        }
-        
-        .bar {
-            width: 70px;
-            background: var(--gradient);
-            border-radius: 8px 8px 0 0;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .bar:hover {
-            transform: translateY(-5px);
-        }
-        
-        .bar-label {
-            position: absolute;
-            bottom: -40px;
-            font-size: 1rem;
-            text-align: center;
-            width: 120px;
-            left: -25px;
-            font-weight: 600;
-            color: var(--text);
-        }
-        
-        .bar-value {
-            position: absolute;
-            top: -35px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            background: var(--surface);
-            padding: 5px 10px;
-            border-radius: 20px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .fact-card {
-            background: var(--surface);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(5px);
-            border-left: 5px solid var(--primary);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .fact-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .fact-title {
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--primary);
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .fact-title i {
-            color: var(--accent);
-        }
-        
-        .water-animation {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100px;
-            overflow: hidden;
-            z-index: 0;
-        }
-        
-        .wave {
-            position: absolute;
-            bottom: 0;
-            width: 200%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z" fill="%232563eb" opacity="0.2"/></svg>');
-            background-size: 1200px 100px;
-            animation: wave 12s linear infinite;
-        }
-        
-        .wave:nth-child(2) {
-            animation-delay: -6s;
-            opacity: 0.5;
-        }
-        
-        @keyframes wave {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(-25%); }
-            100% { transform: translateX(-50%); }
-        }
-        
-        .fullscreen-btn {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            padding: 12px 20px;
-            background: var(--surface);
-            border: none;
-            border-radius: 50px;
-            color: var(--text);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-        }
-        
-        .fullscreen-btn:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-        }
-        
-        .author {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            font-size: 1rem;
-            color: var(--text-secondary);
-            z-index: 10;
-            background: var(--surface);
-            padding: 10px 20px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .type-comparison {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-        }
-        
-        .type-card {
-            background: var(--surface);
-            border-radius: 15px;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            border-left: 5px solid var(--accent);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .type-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .type-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .type-title i {
-            font-size: 1.6rem;
-        }
-        
-        .type-description {
-            flex-grow: 1;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-        
-        .type-applicability {
-            margin-top: 15px;
-            font-style: italic;
-            color: var(--primary);
-            font-weight: 600;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 10;
-        }
-        
-        .progress {
-            height: 100%;
-            background: var(--gradient);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-        
-        .slide-counter {
-            position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            z-index: 10;
-            background: var(--surface);
-            padding: 8px 20px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            font-weight: 600;
-        }
-        
-        /* Адаптация для мобильных устройств */
-        @media (max-width: 768px) {
-            .slide {
-                padding: 20px;
-            }
-            
-            .content-grid {
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr 1fr;
-                gap: 20px;
-                height: 80%;
-            }
-            
-            .text-content, .visual-content {
-                padding: 20px;
-            }
-            
-            .nav-buttons {
-                bottom: 15px;
-            }
-            
-            .slide-indicators {
-                top: 15px;
-                right: 15px;
-                flex-direction: row;
-            }
-            
-            .fullscreen-btn {
-                top: 15px;
-                left: 15px;
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .author {
-                bottom: 15px;
-                right: 15px;
-                font-size: 0.9rem;
-            }
-            
-            .type-comparison {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .bar-chart {
-                flex-direction: column;
-                align-items: center;
-                height: 100%;
-                gap: 20px;
-            }
-            
-            .bar {
-                width: 80%;
-                height: 60px;
-            }
-            
-            .bar-label, .bar-value {
-                position: static;
-                text-align: center;
-                margin: 5px 0;
-            }
-            
-            .slide-counter {
-                top: 80px;
-                font-size: 1rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            h2 {
-                font-size: 1.5rem;
-            }
-            
-            li {
-                font-size: 0.9rem;
-            }
-            
-            .nav-btn {
-                padding: 12px 20px;
-                font-size: 0.9rem;
-            }
-            
-            .author {
-                font-size: 0.8rem;
-            }
-        }
-        
-        /* Стили для полноэкранного режима */
-        :-webkit-full-screen .presentation-container {
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        :-moz-full-screen .presentation-container {
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        :-ms-fullscreen .presentation-container {
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        :fullscreen .presentation-container {
-            width: 100vw;
-            height: 100vh;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Гидрогенераторы</title>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        font-family: 'Arial', sans-serif;
+        background: #0a0f2f;
+        color: #00ffff;
+        perspective: 1000px;
+    }
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .slide {
+        display: none;
+        width: 100%;
+        height: 100%;
+        padding: 50px;
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all 0.8s ease;
+        background: radial-gradient(circle at center, #0a0f2f, #000000);
+        overflow-y: auto;
+    }
+    .slide.active {
+        display: block;
+        animation: fadeIn 1s ease;
+    }
+    h1, h2 {
+        text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+        margin-bottom: 20px;
+    }
+    p {
+        font-size: 1.2em;
+        line-height: 1.5em;
+        max-width: 900px;
+        margin-bottom: 20px;
+    }
+    video {
+        width: 60%;
+        border: 2px solid #0ff;
+        border-radius: 10px;
+        box-shadow: 0 0 30px #0ff;
+        margin-top: 20px;
+    }
+    .rotor {
+        width: 200px;
+        height: 200px;
+        margin: 30px auto;
+        border-radius: 50%;
+        border: 5px solid #0ff;
+        box-shadow: 0 0 50px #0ff, inset 0 0 20px #0ff;
+        animation: spin 5s linear infinite;
+    }
+    .question {
+        margin-top: 30px;
+        padding: 20px;
+        background: rgba(0,255,255,0.1);
+        border-left: 5px solid #0ff;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .question:hover {
+        background: rgba(0,255,255,0.2);
+        transform: scale(1.02);
+    }
+    .answer {
+        display: none;
+        margin-top: 10px;
+        padding-left: 15px;
+        border-left: 3px solid #0ff;
+        font-size: 1em;
+        color: #a0ffff;
+    }
+    @keyframes spin {
+        0% {transform: rotateY(0deg);}
+        100% {transform: rotateY(360deg);}
+    }
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+</style>
 </head>
 <body>
-    <!-- Прогресс-бар -->
-    <div class="progress-bar">
-        <div class="progress" id="progress"></div>
-    </div>
-    
-    <!-- Счетчик слайдов -->
-    <div class="slide-counter" id="slide-counter">1 / 8</div>
-    
-    <div class="presentation-container">
-        <!-- Слайд 1: Введение -->
-        <div class="slide active" id="slide1">
-            <div class="slide-content">
-                <div class="slide-header">
-                    <h1>Что такое гидроэлектростанция (ГЭС)?</h1>
-                </div>
-                <div class="content-grid">
-                    <div class="text-content">
-                        <ul>
-                            <li>ГЭС — сооружение, преобразующее энергию падающей или текущей воды в электрическую.</li>
-                            <li>Основная идея: создать напор и направить поток к турбинам.</li>
-                            <li>По типу конструкции и расположению здания ГЭС различают несколько видов станций.</li>
-                        </ul>
-                    </div>
-                    <div class="visual-content">
-                        <div class="hydro-scheme">
-                            <div class="reservoir" style="top: 50px; left: 100px; width: 200px; height: 120px;"></div>
-                            <div class="dam" style="top: 50px; left: 300px; height: 150px;"></div>
-                            <div class="turbine" style="top: 170px; left: 285px;"></div>
-                            <div class="powerhouse" style="top: 170px; left: 350px; width: 100px; height: 80px;">Здание ГЭС</div>
-                            <div class="river" style="top: 200px; left: 0px; width: 500px; height: 30px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Слайд 2: Классификация ГЭС -->
-        <div class="slide" id="slide2">
-            <div class="slide-content">
-                <div class="slide-header">
-                    <h2>Основные типы гидроэлектростанций</h2>
-                </div>
-                <div class="content-grid">
-                    <div class="text-content">
-                        <ul>
-                            <li>Приплотинные</li>
-                            <li>Русловые (плотинные)</li>
-                            <li>Деривационные</li>
-                            <li>Комбинированные</li>
-                            <li>Каждый тип выбирается в зависимости от рельефа, характера реки и задач.</li>
-                        </ul>
-                    </div>
-                    <div class="visual-content">
-                        <div class="chart-container">
-                            <div class="bar-chart">
-                                <div class="bar" style="height: 70%;">
-                                    <div class="bar-value">Приплотинные</div>
-                                    <div class="bar-label">Высокий напор</div>
-                                </div>
-                                <div class="bar" style="height: 90%;">
-                                    <div class="bar-value">Русловые</div>
-                                    <div class="bar-label">Равнинные реки</div>
-                                </div>
-                                <div class="bar" style="height: 60%;">
-                                    <div class="bar-value">Деривационные</div>
-                                    <div class="bar-label">Горные районы</div>
-                                </div>
-                                <div class="bar" style="height: 80%;">
-                                    <div class="bar-value">Комбинированные</div>
-                                    <div class="bar-label">Универсальные</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Слайд 3: Приплотинные ГЭС -->
-        <div class="slide" id="slide3">
-            <div class="slide-content">
-                <div class="slide-header">
-                    <h2>Приплотинный тип</h2>
-                </div>
-                <div class="content-grid">
-                    <div class="text-content">
-                        <ul>
-                            <li>Здание ГЭС располагается прямо у плотины.</li>
-                            <li>Турбины находятся в теле или у основания плотины.</li>
-                            <li>Применяются при больших перепадах уровня воды.</li>
-                            <li>Преимущества: компактность, высокая надёжность.</li>
-                            <li>Недостатки: массивные строительные работы, дорогостоящее сооружение плотины.</li>
-                        </ul>
-                    </div>
-                    <div class="visual-content">
-                        <div class="hydro-scheme">
-                            <div class="reservoir" style="top: 50px; left: 50px; width: 250px; height: 120px;"></div>
-                            <div class="dam" style="top: 50px; left: 300px; height: 150px;"></div>
-                            <div class="turbine" style="top: 170px; left: 285px;"></div>
-                            <div class="powerhouse" style="top: 170px; left: 350px; width: 100px; height: 60px;">Приплотинная ГЭС</div>
-                            <div class="river" style="top: 230px; left: 0px; width: 500px; height: 30px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Слайд 4: Русловые ГЭС -->
-        <div class="slide" id="slide4">
-            <div class="slide-content">
-                <div class="slide-header">
-                    <h2>Русловой тип</h2>
-                </div>
-                <div class="content-grid">
-                    <div class="text-content">
-                        <ul>
-                            <li>Сооружения размещаются поперёк русла реки.</li>
-                            <li>Здание ГЭС является частью плотины.</li>
-                            <li>Обычно применяются на равнинных реках.</li>
-                            <li>Преимущества: можно создать крупное водохранилище.</li>
-                            <li>Недостатки: значительное затопление территорий, экологическое воздействие.</li>
-                        </ul>
-                    </div>
-                    <div class="visual-content">
-                        <div class="hydro-scheme">
-                            <div class="reservoir" style="top: 50px; left: 50px; width: 350px; height: 150px;"></div>
-                            <div class="dam" style="top: 50px; left: 400px; height: 150px; width: 80px;"></div>
-                            <div class="turbine" style="top: 170px; left: 415px;"></div>
-                            <div class="powerhouse" style="top: 150px; left: 300px; width: 100px; height: 100px;">Русловая ГЭС</div>
-                            <div class="river" style="top: 200px; left: 0px; width: 500px; height: 30px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Слайд 5: Деривационные ГЭС -->
-        <div class="slide" id="slide5">
-            <div class="slide-content">
-                <div class="slide-header">
-                    <h2>Деривационный тип</h2>
-                </div>
-                <div class="content-grid">
-                    <div class="text-content">
-                        <ul>
-                            <li>Вода подводится к турбинам по каналам, тоннелям или трубопроводам.</li>
-                            <li>Водозабор и станция разнесены в пространстве.</li>
-                            <li>Эффективны в горных районах при большом естественном уклоне реки.</li>
-                            <li>Преимущества: меньшее воздействие на природу, можно обходиться без огромных плотин.</li>
-                            <li>Недостатки: высокая сложность инженерных работ.</li>
-                        </ul>
-                    </div>
-                    <div class="visual-content">
-                        <div class="hydro-scheme">
-                            <div class="river" style="top: 50px; left: 50px; width: 100px; height: 30px;"></div>
-                            <div class="dam" style="top: 50px; left: 150px; height: 30px; width: 200px;"></div>
-                            <div class="channel" style="top: 80px; left: 150px; width: 250px; height: 20px;"></div>
-                            <div class="turbine" style="top: 150px; left: 400px;"></div>
-                            <div class="powerhouse" style="top: 150px; left: 470px; width: 100px; height: 80px;">Деривационная ГЭС</div>
-                            <div class="river" style="top: 230px; left: 0px; width: 600px; height: 30px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Слайд 6: Комбинированные ГЭС -->
-        <div class="slide" id="slide6">
-            <div class="slide-content">
-                <div class="slide-header">
-                    <h2>Гибридные решения</h2>
-                </div>
-                <div class="content-grid">
-                    <div class="text-content">
-                        <ul>
-                            <li>Совмещают черты приплотинных и деривационных схем.</li>
-                            <li>Пример: плотина создаёт водохранилище, а часть воды направляется по тоннелям к станции.</li>
-                            <li>Позволяют максимально использовать особенности рельефа и реки.</li>
-                        </ul>
-                    </div>
-                    <div class="visual-content">
-                        <div class="hydro-scheme">
-                            <div class="reservoir" style="top: 50px; left: 50px; width: 250px; height: 120px;"></div>
-                            <div class="dam" style="top: 50px; left: 300px; height: 150px;"></div>
-                            <div class="channel" style="top: 100px; left: 300px; width: 150px; height: 20px;"></div>
-                            <div class="turbine" style="top: 170px; left: 450px;"></div>
-                            <div class="powerhouse" style="top: 170px; left: 520px; width: 100px; height: 80px;">Комбинированная ГЭС</div>
-                            <div class="river" style="top: 250px; left: 0px; width: 650px; height: 30px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Слайд 7: Итоги и значение -->
-        <div class="slide" id="slide7">
-            <div class="slide-content">
-                <div class="slide-header">
-                    <h2>Роль разных типов ГЭС</h2>
-                </div>
-                <div class="content-grid">
-                    <div class="text-content">
-                        <ul>
-                            <li>Приплотинные → подходят для крупных рек и больших перепадов.</li>
-                            <li>Русловые → эффективны для равнинных водотоков.</li>
-                            <li>Деривационные → идеальны для горных условий.</li>
-                            <li>Комбинированные → гибкость и баланс.</li>
-                            <li>Все типы ГЭС вместе позволяют использовать гидроэнергию в самых разных условиях.</li>
-                        </ul>
-                    </div>
-                    <div class="visual-content">
-                        <div class="type-comparison">
-                            <div class="type-card">
-                                <div class="type-title"><i class="fas fa-mountain"></i> Приплотинные</div>
-                                <div class="type-description">Подходят для крупных рек и больших перепадов высоты. Здание ГЭС расположено непосредственно у плотины.</div>
-                                <div class="type-applicability">Применение: крупные реки с большим перепадом высот</div>
-                            </div>
-                            <div class="type-card">
-                                <div class="type-title"><i class="fas fa-water"></i> Русловые</div>
-                                <div class="type-description">Эффективны для равнинных водотоков. Здание ГЭС является частью плотины.</div>
-                                <div class="type-applicability">Применение: равнинные реки</div>
-                            </div>
-                            <div class="type-card">
-                                <div class="type-title"><i class="fas fa-hill-rockslide"></i> Деривационные</div>
-                                <div class="type-description">Идеальны для горных условий. Вода подводится к турбинам по каналам или тоннелям.</div>
-                                <div class="type-applicability">Применение: горные районы</div>
-                            </div>
-                            <div class="type-card">
-                                <div class="type-title"><i class="fas fa-gears"></i> Комбинированные</div>
-                                <div class="type-description">Гибридные решения, сочетающие преимущества разных типов ГЭС.</div>
-                                <div class="type-applicability">Применение: универсальное</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Слайд 8: Статистика и интересные факты -->
-        <div class="slide" id="slide8">
-            <div class="slide-content">
-                <div class="slide-header">
-                    <h2>ГЭС в мире — цифры и факты</h2>
-                </div>
-                <div class="content-grid">
-                    <div class="text-content">
-                        <div class="fact-card">
-                            <div class="fact-title"><i class="fas fa-globe"></i> Мировая доля гидроэнергетики</div>
-                            <div>Гидроэнергетика даёт около 16% всей мировой электроэнергии (данные МЭА).</div>
-                        </div>
-                        <div class="fact-card">
-                            <div class="fact-title"><i class="fas fa-flag"></i> Российская гидроэнергетика</div>
-                            <div>В России гидроэнергетика покрывает ~20% потребности в электричестве.</div>
-                        </div>
-                        <div class="fact-card">
-                            <div class="fact-title"><i class="fas fa-trophy"></i> Крупнейшая ГЭС в мире</div>
-                            <div>Самая крупная ГЭС в мире — Санься (Китай), мощность 22,5 ГВт.</div>
-                        </div>
-                        <div class="fact-card">
-                            <div class="fact-title"><i class="fas fa-industry"></i> Крупнейшая ГЭС в России</div>
-                            <div>Самая мощная в России — Саяно-Шушенская ГЭС, мощность 6,4 ГВт.</div>
-                        </div>
-                        <div class="fact-card">
-                            <div class="fact-title"><i class="fas fa-bolt"></i> Регулирование энергосистемы</div>
-                            <div>Гидроэнергия — единственный возобновляемый источник, который можно использовать для регулирования энергосистемы в реальном времени.</div>
-                        </div>
-                        <div class="fact-card">
-                            <div class="fact-title"><i class="fas fa-snowflake"></i> Норвегия</div>
-                            <div>В Норвегии более 95% всей электроэнергии производится на ГЭС — страна фактически живёт на воде.</div>
-                        </div>
-                    </div>
-                    <div class="visual-content">
-                        <div class="chart-container">
-                            <div class="bar-chart">
-                                <div class="bar" style="height: 16%;">
-                                    <div class="bar-value">16%</div>
-                                    <div class="bar-label">Мировая доля ГЭС</div>
-                                </div>
-                                <div class="bar" style="height: 20%;">
-                                    <div class="bar-value">20%</div>
-                                    <div class="bar-label">Россия</div>
-                                </div>
-                                <div class="bar" style="height: 95%;">
-                                    <div class="bar-value">95%</div>
-                                    <div class="bar-label">Норвегия</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Кнопка полноэкранного режима -->
-        <button class="fullscreen-btn" id="fullscreen-btn"><i class="fas fa-expand"></i> Полный экран</button>
-        
-        <!-- Навигационные кнопки -->
-        <div class="nav-buttons">
-            <button class="nav-btn" id="prev-btn"><i class="fas fa-arrow-left"></i> Назад</button>
-            <button class="nav-btn" id="next-btn">Вперед <i class="fas fa-arrow-right"></i></button>
-        </div>
-        
-        <!-- Индикаторы слайдов -->
-        <div class="slide-indicators">
-            <div class="indicator active" data-slide="0"></div>
-            <div class="indicator" data-slide="1"></div>
-            <div class="indicator" data-slide="2"></div>
-            <div class="indicator" data-slide="3"></div>
-            <div class="indicator" data-slide="4"></div>
-            <div class="indicator" data-slide="5"></div>
-            <div class="indicator" data-slide="6"></div>
-            <div class="indicator" data-slide="7"></div>
-        </div>
-        
-        <!-- Информация об авторе -->
-        <div class="author"><i class="fas fa-user"></i> Презентацию выполнил: Шерифов Алим</div>
-        
-        <!-- Анимация воды -->
-        <div class="water-animation">
-            <div class="wave"></div>
-            <div class="wave"></div>
-        </div>
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const slides = document.querySelectorAll('.slide');
-            const indicators = document.querySelectorAll('.indicator');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const fullscreenBtn = document.getElementById('fullscreen-btn');
-            const progressBar = document.getElementById('progress');
-            const slideCounter = document.getElementById('slide-counter');
-            let currentSlide = 0;
-            
-            // Функция для показа слайда
-            function showSlide(index) {
-                // Скрываем все слайды
-                slides.forEach(slide => {
-                    slide.classList.remove('active', 'prev');
-                });
-                
-                // Показываем текущий слайд
-                slides[index].classList.add('active');
-                
-                // Обновляем индикаторы
-                indicators.forEach((indicator, i) => {
-                    indicator.classList.toggle('active', i === index);
-                });
-                
-                // Обновляем прогресс-бар
-                progressBar.style.width = `${(index + 1) / slides.length * 100}%`;
-                
-                // Обновляем счетчик слайдов
-                slideCounter.textContent = `${index + 1} / ${slides.length}`;
-                
-                currentSlide = index;
-            }
-            
-            // Следующий слайд
-            nextBtn.addEventListener('click', function() {
-                if (currentSlide < slides.length - 1) {
-                    showSlide(currentSlide + 1);
-                }
-            });
-            
-            // Предыдущий слайд
-            prevBtn.addEventListener('click', function() {
-                if (currentSlide > 0) {
-                    showSlide(currentSlide - 1);
-                }
-            });
-            
-            // Навигация по индикаторам
-            indicators.forEach(indicator => {
-                indicator.addEventListener('click', function() {
-                    const slideIndex = parseInt(this.getAttribute('data-slide'));
-                    showSlide(slideIndex);
-                });
-            });
-            
-            // Навигация с клавиатуры
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
-                    if (currentSlide < slides.length - 1) {
-                        showSlide(currentSlide + 1);
-                    }
-                } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-                    if (currentSlide > 0) {
-                        showSlide(currentSlide - 1);
-                    }
-                } else if (e.key === 'Home') {
-                    showSlide(0);
-                } else if (e.key === 'End') {
-                    showSlide(slides.length - 1);
-                }
-            });
-            
-            // Полноэкранный режим
-            fullscreenBtn.addEventListener('click', function() {
-                const container = document.querySelector('.presentation-container');
-                
-                if (!document.fullscreenElement) {
-                    if (container.requestFullscreen) {
-                        container.requestFullscreen();
-                    } else if (container.webkitRequestFullscreen) {
-                        container.webkitRequestFullscreen();
-                    } else if (container.msRequestFullscreen) {
-                        container.msRequestFullscreen();
-                    }
-                    fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i> Выйти из полного экрана';
-                } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
-                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Полный экран';
-                }
-            });
-            
-            // Обработчик изменения полноэкранного режима
-            document.addEventListener('fullscreenchange', updateFullscreenButton);
-            document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
-            document.addEventListener('msfullscreenchange', updateFullscreenButton);
-            
-            function updateFullscreenButton() {
-                if (!document.fullscreenElement && 
-                    !document.webkitFullscreenElement && 
-                    !document.msFullscreenElement) {
-                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Полный экран';
-                }
-            }
-            
-            // Инициализация первого слайда
-            showSlide(0);
-        });
-    </script>
+<!-- Слайд 1: Титульный -->
+<div class="slide active" id="slide1">
+    <h1>Гидрогенераторы</h1>
+    <h2>Энергия воды в действии</h2>
+    <p>Презентация выполнена Шерифов Алим. Мы окунемся в удивительный мир гидрогенераторов — устройств, которые превращают силу воды в электричество. Каждое устройство имеет уникальный принцип работы и тип энергии, которую оно может вырабатывать.</p>
+</div>
+
+<!-- Слайд 2: Что такое гидрогенератор -->
+<div class="slide" id="slide2">
+    <h2>Что такое гидрогенератор?</h2>
+    <p>Гидрогенератор — это устройство, преобразующее кинетическую энергию воды в электрическую. Основные компоненты: турбина, ротор, статор и генератор. Поток воды вращает турбину, передавая вращение на ротор, который в генераторе создает электричество.</p>
+    <div class="rotor"></div>
+</div>
+
+<!-- Слайд 3: Принцип работы -->
+<div class="slide" id="slide3">
+    <h2>Принцип работы</h2>
+    <p>Вода под высоким давлением подается на лопасти турбины, создавая вращение. Ротор генератора преобразует механическую энергию вращения в электрический ток. Этот процесс непрерывен, позволяя получать стабильную энергию из возобновляемого источника. Именно поэтому гидрогенераторы являются ключевыми для устойчивой энергетики.</p>
+    <video autoplay loop muted src="hydro_turbine.mp4"></video>
+</div>
+
+<!-- Слайд 4: Виды гидрогенераторов -->
+<div class="slide" id="slide4">
+    <h2>Виды гидрогенераторов</h2>
+    <p>Существует несколько типов гидрогенераторов:</p>
+    <ul>
+        <li><b>Дамбы:</b> крупные ГЭС для промышленных объектов и городов.</li>
+        <li><b>Приливные:</b> используют энергию приливов и отливов морей.</li>
+        <li><b>Малые ГЭС:</b> локальные источники для поселений и ферм.</li>
+        <li><b>Насосные:</b> аккумуляторы энергии с перепадом высот, работают как батареи.</li>
+    </ul>
+</div>
+
+<!-- Слайд 5: Преимущества и ограничения -->
+<div class="slide" id="slide5">
+    <h2>Преимущества и ограничения</h2>
+    <p><b>Преимущества:</b> возобновляемый источник энергии, низкая эксплуатационная стоимость, долгий срок службы.</p>
+    <p><b>Ограничения:</b> воздействие на экосистему рек, сезонность воды, высокие капитальные затраты на строительство.</p>
+</div>
+
+<!-- Слайд 6: Инновации и голограммы -->
+<div class="slide" id="slide6">
+    <h2>Инновации и "голограммы"</h2>
+    <p>Современные гидрогенераторы можно моделировать в VR/AR, визуализировать потоки воды и вращение ротора. Используются прозрачные панели с подсветкой, создающие эффект голограммы. Это позволяет инженерно анализировать эффективность и безопасно демонстрировать устройство для образовательных целей.</p>
+</div>
+
+<!-- Слайд 7: Необычные вопросы -->
+<div class="slide" id="slide7">
+    <h2>Необычные вопросы</h2>
+    <div class="question">Что если вода внезапно остановится?
+        <div class="answer">Генератор мгновенно останавливается, но встроенные тормоза предотвращают повреждение оборудования.</div>
+    </div>
+    <div class="question">Можно ли мини-генератор в квартире?
+        <div class="answer">Существуют компактные турбины для домашних нужд, но их мощность значительно меньше, чем у промышленных ГЭС.</div>
+    </div>
+    <div class="question">Как проверить эффективность генератора?
+        <div class="answer">С помощью датчиков тока, напряжения и вращения ротора можно точно оценить коэффициент полезного действия.</div>
+    </div>
+</div>
+
+<!-- Слайд 8: Заключение -->
+<div class="slide" id="slide8">
+    <h2>Заключение</h2>
+    <p>Гидрогенераторы — ключ к устойчивой энергетике будущего. Они позволяют экономично и экологично получать энергию, а инновации делают их визуально впечатляющими и технологически совершенными. Их развитие критически важно для перехода к возобновляемым источникам энергии и снижению зависимости от ископаемого топлива.</p>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const questions = document.querySelectorAll('.question');
+
+document.addEventListener('keydown', (e) => {
+    if(e.key === "ArrowRight") nextSlide();
+    if(e.key === "ArrowLeft") prevSlide();
+});
+
+function showSlide(index) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    slides[index].classList.add('active');
+}
+
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+}
+
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+}
+
+// Вопросы с раскрытием
+questions.forEach(q => {
+    q.addEventListener('click', () => {
+        const answer = q.querySelector('.answer');
+        answer.style.display = (answer.style.display === 'block') ? 'none' : 'block';
+    });
+});
+</script>
+
 </body>
 </html>
