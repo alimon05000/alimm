@@ -1,199 +1,911 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Гидрогенераторы</title>
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-        font-family: 'Arial', sans-serif;
-        background: #0a0f2f;
-        color: #00ffff;
-        perspective: 1000px;
-    }
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .slide {
-        display: none;
-        width: 100%;
-        height: 100%;
-        padding: 50px;
-        box-sizing: border-box;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transition: all 0.8s ease;
-        background: radial-gradient(circle at center, #0a0f2f, #000000);
-        overflow-y: auto;
-    }
-    .slide.active {
-        display: block;
-        animation: fadeIn 1s ease;
-    }
-    h1, h2 {
-        text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
-        margin-bottom: 20px;
-    }
-    p {
-        font-size: 1.2em;
-        line-height: 1.5em;
-        max-width: 900px;
-        margin-bottom: 20px;
-    }
-    video {
-        width: 60%;
-        border: 2px solid #0ff;
-        border-radius: 10px;
-        box-shadow: 0 0 30px #0ff;
-        margin-top: 20px;
-    }
-    .rotor {
-        width: 200px;
-        height: 200px;
-        margin: 30px auto;
-        border-radius: 50%;
-        border: 5px solid #0ff;
-        box-shadow: 0 0 50px #0ff, inset 0 0 20px #0ff;
-        animation: spin 5s linear infinite;
-    }
-    .question {
-        margin-top: 30px;
-        padding: 20px;
-        background: rgba(0,255,255,0.1);
-        border-left: 5px solid #0ff;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .question:hover {
-        background: rgba(0,255,255,0.2);
-        transform: scale(1.02);
-    }
-    .answer {
-        display: none;
-        margin-top: 10px;
-        padding-left: 15px;
-        border-left: 3px solid #0ff;
-        font-size: 1em;
-        color: #a0ffff;
-    }
-    @keyframes spin {
-        0% {transform: rotateY(0deg);}
-        100% {transform: rotateY(360deg);}
-    }
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гидрогенераторы - Энергия воды в действии</title>
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c2461, #1e3799, #4a69bd);
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Контейнер презентации */
+        .presentation {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Слайды */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        /* Общие стили для контента */
+        .content {
+            max-width: 1200px;
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: rgba(10, 25, 47, 0.7);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 150, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1, h2, h3 {
+            text-shadow: 0 0 10px rgba(100, 200, 255, 0.7);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            color: #4facfe;
+        }
+
+        h3 {
+            font-size: 2rem;
+            color: #00f2fe;
+        }
+
+        p {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+
+        /* Анимация воды на фоне */
+        .water-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 100, 200, 0.2), rgba(0, 200, 255, 0.1));
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .water-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 10%, transparent 20%),
+                        radial-gradient(circle, rgba(0, 200, 255, 0.05) 10%, transparent 20%);
+            background-size: 100px 100px, 150px 150px;
+            animation: waterFlow 20s linear infinite;
+        }
+
+        @keyframes waterFlow {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+
+        /* Стили для титульного слайда */
+        .title-slide h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .author {
+            font-size: 1.8rem;
+            color: #00f2fe;
+            margin-bottom: 40px;
+        }
+
+        .subtitle {
+            font-size: 1.6rem;
+            max-width: 800px;
+            margin-bottom: 50px;
+        }
+
+        /* Анимация ротора */
+        .rotor-container {
+            width: 200px;
+            height: 200px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .rotor {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #4facfe, #00f2fe, #4facfe);
+            position: relative;
+            animation: rotate 5s linear infinite;
+            box-shadow: 0 0 30px rgba(0, 200, 255, 0.7);
+        }
+
+        .rotor::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: rgba(10, 25, 47, 0.8);
+        }
+
+        .rotor-blade {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40%;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, #00f2fe, transparent);
+            transform-origin: left center;
+        }
+
+        .rotor-blade:nth-child(1) { transform: translateY(-50%) rotate(0deg); }
+        .rotor-blade:nth-child(2) { transform: translateY(-50%) rotate(45deg); }
+        .rotor-blade:nth-child(3) { transform: translateY(-50%) rotate(90deg); }
+        .rotor-blade:nth-child(4) { transform: translateY(-50%) rotate(135deg); }
+        .rotor-blade:nth-child(5) { transform: translateY(-50%) rotate(180deg); }
+        .rotor-blade:nth-child(6) { transform: translateY(-50%) rotate(225deg); }
+        .rotor-blade:nth-child(7) { transform: translateY(-50%) rotate(270deg); }
+        .rotor-blade:nth-child(8) { transform: translateY(-50%) rotate(315deg); }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Стили для слайда с видео */
+        .video-container {
+            width: 80%;
+            max-width: 800px;
+            height: 400px;
+            margin: 30px auto;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 150, 255, 0.5);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0c2461, #1e3799);
+        }
+
+        .video-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #4facfe;
+        }
+
+        /* Стили для слайда с видами гидрогенераторов */
+        .types-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .type-card {
+            width: 200px;
+            height: 200px;
+            background: rgba(20, 40, 80, 0.7);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+        }
+
+        .type-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 150, 255, 0.5);
+        }
+
+        .type-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #00f2fe;
+        }
+
+        .type-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Стили для слайда с преимуществами и ограничениями */
+        .pros-cons-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .pros, .cons {
+            flex: 1;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(20, 40, 80, 0.7);
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+        }
+
+        .pros h3 {
+            color: #4CAF50;
+        }
+
+        .cons h3 {
+            color: #F44336;
+        }
+
+        .pros-list, .cons-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .pros-list li, .cons-list li {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            line-height: 1.4;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .pros-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .cons-list li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #F44336;
+            font-weight: bold;
+        }
+
+        /* Стили для слайда с инновациями */
+        .innovations-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .innovation-card {
+            width: 250px;
+            height: 250px;
+            background: rgba(20, 40, 80, 0.7);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .innovation-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(0, 200, 255, 0.3), transparent 30%);
+            animation: rotate 4s linear infinite;
+        }
+
+        .innovation-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .innovation-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #00f2fe;
+        }
+
+        /* Стили для слайда с вопросами */
+        .questions-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 20px;
+            text-align: left;
+            background: rgba(20, 40, 80, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+        }
+
+        .question {
+            padding: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .question:hover {
+            background: rgba(30, 60, 120, 0.7);
+        }
+
+        .question::after {
+            content: '+';
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .question.active::after {
+            transform: rotate(45deg);
+        }
+
+        .answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .answer.show {
+            padding: 20px;
+            max-height: 500px;
+        }
+
+        /* Стили для заключительного слайда */
+        .conclusion-content {
+            max-width: 800px;
+        }
+
+        .power-visual {
+            width: 300px;
+            height: 300px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .power-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #00f2fe, #4facfe);
+            box-shadow: 0 0 50px rgba(0, 200, 255, 0.8);
+            animation: pulse 2s infinite alternate;
+        }
+
+        .power-wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 2px solid rgba(0, 200, 255, 0.5);
+            animation: wave 3s infinite;
+        }
+
+        .power-wave:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .power-wave:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        @keyframes wave {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+            }
+        }
+
+        /* Навигация */
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: rgba(20, 40, 80, 0.7);
+            color: #fff;
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: rgba(30, 60, 120, 0.9);
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.7);
+            transform: scale(1.1);
+        }
+
+        .slide-indicators {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: rgba(100, 200, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator.active {
+            background: #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.7);
+            transform: scale(1.2);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1.2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .pros-cons-container {
+                flex-direction: column;
+            }
+            
+            .types-container, .innovations-container {
+                gap: 15px;
+            }
+            
+            .type-card, .innovation-card {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .type-icon, .innovation-icon {
+                font-size: 2rem;
+            }
+            
+            .type-name {
+                font-size: 1rem;
+            }
+            
+            .slide-indicators {
+                right: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<!-- Слайд 1: Титульный -->
-<div class="slide active" id="slide1">
-    <h1>Гидрогенераторы</h1>
-    <h2>Энергия воды в действии</h2>
-    <p>Презентация выполнена Шерифов Алим. Мы окунемся в удивительный мир гидрогенераторов — устройств, которые превращают силу воды в электричество. Каждое устройство имеет уникальный принцип работы и тип энергии, которую оно может вырабатывать.</p>
-</div>
-
-<!-- Слайд 2: Что такое гидрогенератор -->
-<div class="slide" id="slide2">
-    <h2>Что такое гидрогенератор?</h2>
-    <p>Гидрогенератор — это устройство, преобразующее кинетическую энергию воды в электрическую. Основные компоненты: турбина, ротор, статор и генератор. Поток воды вращает турбину, передавая вращение на ротор, который в генераторе создает электричество.</p>
-    <div class="rotor"></div>
-</div>
-
-<!-- Слайд 3: Принцип работы -->
-<div class="slide" id="slide3">
-    <h2>Принцип работы</h2>
-    <p>Вода под высоким давлением подается на лопасти турбины, создавая вращение. Ротор генератора преобразует механическую энергию вращения в электрический ток. Этот процесс непрерывен, позволяя получать стабильную энергию из возобновляемого источника. Именно поэтому гидрогенераторы являются ключевыми для устойчивой энергетики.</p>
-    <video autoplay loop muted src="hydro_turbine.mp4"></video>
-</div>
-
-<!-- Слайд 4: Виды гидрогенераторов -->
-<div class="slide" id="slide4">
-    <h2>Виды гидрогенераторов</h2>
-    <p>Существует несколько типов гидрогенераторов:</p>
-    <ul>
-        <li><b>Дамбы:</b> крупные ГЭС для промышленных объектов и городов.</li>
-        <li><b>Приливные:</b> используют энергию приливов и отливов морей.</li>
-        <li><b>Малые ГЭС:</b> локальные источники для поселений и ферм.</li>
-        <li><b>Насосные:</b> аккумуляторы энергии с перепадом высот, работают как батареи.</li>
-    </ul>
-</div>
-
-<!-- Слайд 5: Преимущества и ограничения -->
-<div class="slide" id="slide5">
-    <h2>Преимущества и ограничения</h2>
-    <p><b>Преимущества:</b> возобновляемый источник энергии, низкая эксплуатационная стоимость, долгий срок службы.</p>
-    <p><b>Ограничения:</b> воздействие на экосистему рек, сезонность воды, высокие капитальные затраты на строительство.</p>
-</div>
-
-<!-- Слайд 6: Инновации и голограммы -->
-<div class="slide" id="slide6">
-    <h2>Инновации и "голограммы"</h2>
-    <p>Современные гидрогенераторы можно моделировать в VR/AR, визуализировать потоки воды и вращение ротора. Используются прозрачные панели с подсветкой, создающие эффект голограммы. Это позволяет инженерно анализировать эффективность и безопасно демонстрировать устройство для образовательных целей.</p>
-</div>
-
-<!-- Слайд 7: Необычные вопросы -->
-<div class="slide" id="slide7">
-    <h2>Необычные вопросы</h2>
-    <div class="question">Что если вода внезапно остановится?
-        <div class="answer">Генератор мгновенно останавливается, но встроенные тормоза предотвращают повреждение оборудования.</div>
+    <div class="presentation">
+        <!-- Фон с анимацией воды -->
+        <div class="water-bg"></div>
+        
+        <!-- Слайд 1: Титульный -->
+        <div class="slide active" id="slide1">
+            <div class="content title-slide">
+                <h1>Гидрогенераторы</h1>
+                <div class="author">Шерифов Алим</div>
+                <p class="subtitle">Использование силы воды для создания чистой энергии будущего</p>
+                <div class="rotor-container">
+                    <div class="rotor">
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 2: Что такое гидрогенератор -->
+        <div class="slide" id="slide2">
+            <div class="content">
+                <h2>Что такое гидрогенератор?</h2>
+                <p>Гидрогенератор — это устройство, преобразующее кинетическую энергию движущейся воды в электрическую энергию. Это один из старейших и наиболее эффективных способов получения электроэнергии из возобновляемых источников.</p>
+                <p>Основной принцип работы основан на вращении турбины под действием потока воды, которая, в свою очередь, приводит в движение генератор, вырабатывающий электрический ток.</p>
+                <div class="rotor-container">
+                    <div class="rotor">
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                        <div class="rotor-blade"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 3: Принцип работы -->
+        <div class="slide" id="slide3">
+            <div class="content">
+                <h2>Принцип работы</h2>
+                <p>Гидрогенераторы работают по принципу преобразования потенциальной энергии воды в кинетическую, а затем в механическую и электрическую энергию.</p>
+                <p>Основные этапы процесса:</p>
+                <ul style="text-align: left; max-width: 600px; margin: 20px auto; font-size: 1.3rem;">
+                    <li>Накопление воды в водохранилище</li>
+                    <li>Подача воды через напорные трубопроводы</li>
+                    <li>Вращение турбины потоком воды</li>
+                    <li>Преобразование механической энергии в электрическую с помощью генератора</li>
+                    <li>Передача электроэнергии в сеть через трансформаторы</li>
+                </ul>
+                <div class="video-container">
+                    <div class="video-placeholder">
+                        <i>▶</i>
+                        <p>Видео: Принцип работы гидроэлектростанции</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 4: Виды гидрогенераторов -->
+        <div class="slide" id="slide4">
+            <div class="content">
+                <h2>Виды гидрогенераторов</h2>
+                <p>Существует несколько основных типов гидрогенераторов, различающихся по принципу работы и масштабу:</p>
+                <div class="types-container">
+                    <div class="type-card">
+                        <div class="type-icon">🌊</div>
+                        <div class="type-name">Дамбовые</div>
+                        <p>Крупные ГЭС с плотинами</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🌅</div>
+                        <div class="type-name">Приливные</div>
+                        <p>Используют энергию приливов и отливов</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">⚡</div>
+                        <div class="type-name">Малые</div>
+                        <p>Для локального энергоснабжения</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon">🔄</div>
+                        <div class="type-name">Насосные</div>
+                        <p>Аккумулируют энергию</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 5: Преимущества и ограничения -->
+        <div class="slide" id="slide5">
+            <div class="content">
+                <h2>Преимущества и ограничения</h2>
+                <div class="pros-cons-container">
+                    <div class="pros">
+                        <h3>Преимущества</h3>
+                        <ul class="pros-list">
+                            <li>Возобновляемость источника энергии</li>
+                            <li>Низкая стоимость производства электроэнергии</li>
+                            <li>Долговечность и надежность оборудования</li>
+                            <li>Быстрый запуск и регулировка мощности</li>
+                            <li>Снижение выбросов парниковых газов</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h3>Ограничения</h3>
+                        <ul class="cons-list">
+                            <li>Высокие первоначальные инвестиции</li>
+                            <li>Зависимость от географических условий</li>
+                            <li>Воздействие на экосистемы рек</li>
+                            <li>Необходимость переселения населения</li>
+                            <li>Сезонные колебания уровня воды</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 6: Инновации -->
+        <div class="slide" id="slide6">
+            <div class="content">
+                <h2>Инновации в гидроэнергетике</h2>
+                <p>Современные технологии открывают новые возможности для гидроэнергетики:</p>
+                <div class="innovations-container">
+                    <div class="innovation-card">
+                        <div class="innovation-icon">👓</div>
+                        <div class="type-name">VR/AR симуляторы</div>
+                        <p>Обучение и проектирование в виртуальной реальности</p>
+                    </div>
+                    <div class="innovation-card">
+                        <div class="innovation-icon">📊</div>
+                        <div class="type-name">Голограммы</div>
+                        <p>3D-визуализация потоков и оборудования</p>
+                    </div>
+                    <div class="innovation-card">
+                        <div class="innovation-icon">🌀</div>
+                        <div class="type-name">Умные турбины</div>
+                        <p>Автоматическая адаптация к изменению потоков</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 7: Необычные вопросы -->
+        <div class="slide" id="slide7">
+            <div class="content">
+                <h2>Необычные вопросы о гидрогенераторах</h2>
+                <div class="questions-container">
+                    <div class="question-item">
+                        <div class="question">Могут ли гидрогенераторы работать в космосе?</div>
+                        <div class="answer">В условиях невесомости традиционные гидрогенераторы не работают, так как для их функционирования необходима гравитация. Однако в будущем возможно создание систем, использующих другие принципы движения жидкостей в космосе.</div>
+                    </div>
+                    <div class="question-item">
+                        <div class="question">Какой самый необычный источник воды для гидрогенератора?</div>
+                        <div class="answer">Одним из самых необычных является использование сточных вод в городах. Специальные микротурбины устанавливаются в канализационных системах и вырабатывают электроэнергию из потоков сточных вод.</div>
+                    </div>
+                    <div class="question-item">
+                        <div class="question">Можно ли использовать гидрогенератор в домашних условиях?</div>
+                        <div class="answer">Да, существуют малые гидрогенераторы мощностью от нескольких сотен ватт до нескольких киловатт, которые можно установить на небольших реках или ручьях для обеспечения электроэнергией частного дома.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 8: Заключение -->
+        <div class="slide" id="slide8">
+            <div class="content conclusion-content">
+                <h2>Заключение</h2>
+                <p>Гидрогенераторы остаются одним из самых эффективных и надежных источников возобновляемой энергии. Они обеспечивают стабильное энергоснабжение, способствуют снижению выбросов CO2 и играют ключевую роль в переходе к устойчивой энергетике.</p>
+                <p>С развитием технологий и внедрением инноваций гидроэнергетика продолжит совершенствоваться, предлагая новые решения для глобальных энергетических вызовов.</p>
+                <div class="power-visual">
+                    <div class="power-core"></div>
+                    <div class="power-wave"></div>
+                    <div class="power-wave"></div>
+                    <div class="power-wave"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Навигация -->
+        <div class="navigation">
+            <div class="nav-btn prev-btn">←</div>
+            <div class="nav-btn next-btn">→</div>
+        </div>
+        
+        <!-- Индикаторы слайдов -->
+        <div class="slide-indicators">
+            <div class="indicator active" data-slide="1"></div>
+            <div class="indicator" data-slide="2"></div>
+            <div class="indicator" data-slide="3"></div>
+            <div class="indicator" data-slide="4"></div>
+            <div class="indicator" data-slide="5"></div>
+            <div class="indicator" data-slide="6"></div>
+            <div class="indicator" data-slide="7"></div>
+            <div class="indicator" data-slide="8"></div>
+        </div>
     </div>
-    <div class="question">Можно ли мини-генератор в квартире?
-        <div class="answer">Существуют компактные турбины для домашних нужд, но их мощность значительно меньше, чем у промышленных ГЭС.</div>
-    </div>
-    <div class="question">Как проверить эффективность генератора?
-        <div class="answer">С помощью датчиков тока, напряжения и вращения ротора можно точно оценить коэффициент полезного действия.</div>
-    </div>
-</div>
 
-<!-- Слайд 8: Заключение -->
-<div class="slide" id="slide8">
-    <h2>Заключение</h2>
-    <p>Гидрогенераторы — ключ к устойчивой энергетике будущего. Они позволяют экономично и экологично получать энергию, а инновации делают их визуально впечатляющими и технологически совершенными. Их развитие критически важно для перехода к возобновляемым источникам энергии и снижению зависимости от ископаемого топлива.</p>
-</div>
-
-<script>
-let currentSlide = 0;
-const slides = document.querySelectorAll('.slide');
-const questions = document.querySelectorAll('.question');
-
-document.addEventListener('keydown', (e) => {
-    if(e.key === "ArrowRight") nextSlide();
-    if(e.key === "ArrowLeft") prevSlide();
-});
-
-function showSlide(index) {
-    slides.forEach(slide => slide.classList.remove('active'));
-    slides[index].classList.add('active');
-}
-
-function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    showSlide(currentSlide);
-}
-
-function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    showSlide(currentSlide);
-}
-
-// Вопросы с раскрытием
-questions.forEach(q => {
-    q.addEventListener('click', () => {
-        const answer = q.querySelector('.answer');
-        answer.style.display = (answer.style.display === 'block') ? 'none' : 'block';
-    });
-});
-</script>
-
+    <script>
+        // Управление слайдами
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const indicators = document.querySelectorAll('.indicator');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            let currentSlide = 0;
+            
+            // Функция показа слайда
+            function showSlide(index) {
+                // Скрываем все слайды
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Убираем активный класс со всех индикаторов
+                indicators.forEach(indicator => {
+                    indicator.classList.remove('active');
+                });
+                
+                // Показываем выбранный слайд
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                currentSlide = index;
+            }
+            
+            // Переход к следующему слайду
+            function nextSlide() {
+                let nextIndex = currentSlide + 1;
+                if (nextIndex >= slides.length) {
+                    nextIndex = 0;
+                }
+                showSlide(nextIndex);
+            }
+            
+            // Переход к предыдущему слайду
+            function prevSlide() {
+                let prevIndex = currentSlide - 1;
+                if (prevIndex < 0) {
+                    prevIndex = slides.length - 1;
+                }
+                showSlide(prevIndex);
+            }
+            
+            // Обработчики событий для кнопок навигации
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+            
+            // Обработчики событий для индикаторов
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    showSlide(index);
+                });
+            });
+            
+            // Обработчик события для колеса мыши
+            document.addEventListener('wheel', function(e) {
+                if (e.deltaY > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            });
+            
+            // Обработчики событий для клавиатуры
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                }
+            });
+            
+            // Интерактивные вопросы
+            const questions = document.querySelectorAll('.question');
+            questions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    const isActive = this.classList.contains('active');
+                    
+                    // Закрываем все ответы
+                    questions.forEach(q => {
+                        q.classList.remove('active');
+                        q.nextElementSibling.classList.remove('show');
+                    });
+                    
+                    // Если вопрос не был активен, открываем его ответ
+                    if (!isActive) {
+                        this.classList.add('active');
+                        answer.classList.add('show');
+                    }
+                });
+            });
+            
+            // Инициализация первого слайда
+            showSlide(0);
+        });
+    </script>
 </body>
 </html>
